@@ -35,7 +35,6 @@ class Dosen extends RestController {
                 $s3+=1;
             }
         }
-
         $this->response([
             'status' => 'success',
             'message' => 'Count Of Dosen',
