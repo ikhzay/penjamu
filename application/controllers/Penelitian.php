@@ -28,6 +28,8 @@ class Penelitian extends RestController {
         $sql_tahun = "SELECT tahun FROM tb_6 WHERE prodi_kode = '552011' GROUP BY tahun DESC LIMIT 3";
         $tahun = $this->db->query($sql_tahun)->result();
         $thn = [];
+        $mhs = 0;
+        $dosen = 0;
 
         foreach($tahun as $t){
             array_push($thn,$t->tahun);
@@ -41,6 +43,10 @@ class Penelitian extends RestController {
             ";
             $ts_data = $this->db->query($ts)->result();
             $data = $this->jml_data($ts_data);
+
+            $mhs+=$data[0];
+            $dosen+=$data[1];
+
             $object[] = (object) [
                 'tahun' => $thn[$i],
                 'mhs' => $data[0],
@@ -50,7 +56,9 @@ class Penelitian extends RestController {
         $this->response([
             "status" => "success",
             "message"=> "Count Of Penelitian",
-            'data' => $object
+            "mahasiswa" => $mhs,
+            "dosen" => $dosen,
+            "data" => $object
         ], 200);
     }
 

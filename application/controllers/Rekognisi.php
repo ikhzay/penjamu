@@ -28,6 +28,9 @@ class Rekognisi extends RestController {
         $sql_tahun = "SELECT tahun FROM tb_3b_1 WHERE prodi_kode = '552011' GROUP BY tahun DESC LIMIT 3";
         $tahun = $this->db->query($sql_tahun)->result();
         $thn = [];
+        $internasional =0;
+        $nasional =0;
+        $lokal =0;
 
         foreach($tahun as $t){
             array_push($thn,$t->tahun);
@@ -44,7 +47,7 @@ class Rekognisi extends RestController {
         for($i=0 ; $i<sizeof($thn) ; $i++){
             $inter = 0;
             $nas = 0;
-            $lokal = 0;
+            $lok = 0;
             foreach($data as $d){
                 if ($d->tahun == $thn[$i]){
                     
@@ -53,20 +56,26 @@ class Rekognisi extends RestController {
                     }else if($d->tingkat == 2){
                         $nas++;
                     }else{
-                        $lokal++;
+                        $lok++;
                     }
                 }
             }
+            $internasional+=$inter;
+            $nasional+=$nas;
+            $lokal+=$lok;
             $object[] = (object) [
                 'tahun' => $thn[$i],
                 'internasional' => $inter,
                 'nasional' => $nas,
-                'lokal' => $lokal,
+                'lokal' => $lok,
             ];
         }
         $this->response([
             "status" => "success",
             "message"=> "Count Of Rekognisi",
+            "internasional" => $internasional,
+            "nasional" => $nasional,
+            "lokal" => $lokal,
             'data' => $object
         ], 200);
     }
