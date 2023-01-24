@@ -13,6 +13,17 @@ class Rekognisi extends RestController {
         $this->load->database();
     }
 
+    public function getAll_get(){
+        $rekognisi = $this->db->get_where('tb_3b_1',array('prodi_kode'=>'552011'));
+
+        $this->response([
+            'status' => 'success',
+            'message' => 'Count Of Rekognisi',
+            'jumlah' => $rekognisi->num_rows(),
+            'data' => $rekognisi->result()
+        ], 200);
+    }
+
     public function grafik_get(){
         $sql_tahun = "SELECT tahun FROM tb_3b_1 WHERE prodi_kode = '552011' GROUP BY tahun DESC LIMIT 3";
         $tahun = $this->db->query($sql_tahun)->result();

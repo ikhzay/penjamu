@@ -13,6 +13,17 @@ class Prestasi extends RestController {
         $this->load->database();
     }
 
+    public function getAll_get(){
+        $prestasi = $this->db->get_where('tb_8b_1',array('prodi_kode'=>'552011'));
+
+        $this->response([
+            'status' => 'success',
+            'message' => 'Count Of Prestasi',
+            'jumlah' => $prestasi->num_rows(),
+            'data' => $prestasi->result()
+        ], 200);
+    }
+
     public function grafik_get(){
         $sql_tahun = "SELECT tahun_perolehan as tahun FROM tb_8b_1 WHERE prodi_kode = '552011' GROUP BY tahun_perolehan DESC LIMIT 3";
         $tahun = $this->db->query($sql_tahun)->result();
